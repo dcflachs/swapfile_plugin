@@ -65,7 +65,7 @@ swapfile_start()
     else
       if [ `stat -f -c %T ${SWAP_LOCATION_NEW}` == "btrfs" ]; then
         #Swapfile is on a btrfs filesystem
-        if [ `stat --format=%i ${SWAP_LOCATION_NEW}` -eq 256 ]; then
+        if [ `stat --format=%i ${SWAP_LOCATION_NEW}` != "256" ]; then
           #Swapfile is in a btrfs subvolume
           if [ `lsattr -l ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} | grep -q No_COW`]; then
             #Swapfile has No_COW
@@ -98,6 +98,9 @@ swapfile_start()
 
         #Create a subvolume for the swapfile
         btrfs subvolume create ${SWAP_LOCATION_NEW}
+
+        #Turn off Copy-on-Write for swapfile
+        chattr -R +C ${SWAP_LOCATION_NEW}
       else
        # Create swap file location including parents if they don't exist
        mkdir --parents ${SWAP_LOCATION_NEW}
@@ -106,7 +109,7 @@ swapfile_start()
 
     if [ `stat -f -c %T ${SWAP_LOCATION_NEW}` == "btrfs" ]; then
       #Swapfile is on a btrfs filesystem
-      if [ `stat --format=%i ${SWAP_LOCATION_NEW}` -ne 256 ]; then
+      if [ `stat --format=%i ${SWAP_LOCATION_NEW}` != "256" ]; then
         #Swapfile is not in a btrfs subvolume
         logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} is on a BTRFS file system but not in a subvolume."
         return
@@ -118,9 +121,6 @@ swapfile_start()
     dd if=/dev/zero of=${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} bs=1M count=${SWAP_SIZE_MB_NEW}
 
     if [ `stat -f -c %T ${SWAP_LOCATION_NEW}` == "btrfs" ]; then
-      #Turn off Copy-on-Write for swapfile
-      chattr +C ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}
-
       #Turn off compression on swapfile
       btrfs property set ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} compression none
     fi
