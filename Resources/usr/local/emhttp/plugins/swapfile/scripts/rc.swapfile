@@ -65,7 +65,7 @@ swapfile_start()
     else
       if [ `stat -f -c %T ${SWAP_LOCATION_NEW}` == "btrfs" ]; then
         #Swapfile is on a btrfs filesystem
-        if [ `stat --format=%i ${SWAP_LOCATION_NEW}` != "256" ]; then
+        if [ `stat --format=%i ${SWAP_LOCATION_NEW}` == "256" ]; then
           #Swapfile is in a btrfs subvolume
           if [ `lsattr -l ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} | grep -q No_COW`]; then
             #Swapfile has No_COW
