@@ -19,6 +19,7 @@
          version="&version;"
          launch="&launch;"
          pluginURL="&pluginURL;"
+         icon="microchip"
 >
 
 <!--
