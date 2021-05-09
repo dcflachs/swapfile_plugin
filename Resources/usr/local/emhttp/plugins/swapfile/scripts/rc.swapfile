@@ -67,9 +67,9 @@ swapfile_start()
         #Swapfile is on a btrfs filesystem
         if [ `stat --format=%i ${SWAP_LOCATION_NEW}` == "256" ]; then
           #Swapfile is in a btrfs subvolume
-          if [ `lsattr -l ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} | grep -q No_COW`]; then
+          if [ $(lsattr -l ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} | grep -c No_COW) -ne 0 ]; then
             #Swapfile has No_COW
-            if [ `btrfs property get ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} compression | grep -q compression`]; then
+            if [ $(btrfs property get ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} compression | grep -c compression) -ne 0 ]; then
               logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} is on a BTRFS file system but has compression enabled."
               return
             fi
