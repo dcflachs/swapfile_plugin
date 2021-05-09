@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name        "swapfile">
 <!ENTITY author      "Dan Kessler">
-<!ENTITY version     "2021.05.07">
+<!ENTITY version     "2021.05.09">
 <!ENTITY launch      "Settings/&name;">
 <!ENTITY pluginURL   "https://raw.githubusercontent.com/dcflachs/&name;_plugin/custom-build/&name;.plg">
 <!ENTITY packageVER  "&version;">
-<!ENTITY packageMD5  "ce0cf0dffae5a0ccdc9af61daa55e15a">
+<!ENTITY packageMD5  "84909f8e6c433936a907cf9bcf61211e">
 <!ENTITY packagefile "&name;-package-&packageVER;.txz">
 <!ENTITY packageURL  "https://github.com/dcflachs/&name;_plugin/raw/custom-build/archive/&packagefile;">
 <!ENTITY pluginLOC   "/boot/config/plugins/&name;">
