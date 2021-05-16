@@ -1,4 +1,5 @@
 <?PHP
+$swapfile_script_path = "/plugins/swapfile/scripts/rc.swapfile";
 $swapfile_cfg = parse_ini_file("/boot/config/plugins/swapfile/swapfile.cfg");
 
 $swapfile_location = $swapfile_cfg['SWAP_LOCATION'];
@@ -104,8 +105,6 @@ else
     <span class="left">Actions</span>
   </div>
 
-  <br></br>
-
   <div>
     <table>
       <tr style="font-weight:bold; color:#333333; background:#F0F0F0; text-shadow:0 1px 1px #FFFFFF;">
@@ -115,7 +114,7 @@ else
         <tr>
           <td width="30%">
             <form name="stop" method="POST" action="/update.htm" target="progressFrame">
-              <input type="hidden" name="cmd" value="<?=$path_prefix;?>/plugins/swapfile/scripts/rc.swapfile">
+              <input type="hidden" name="cmd" value="<?=$path_prefix;?><?=$swapfile_script_path;?>">
               <input type="hidden" name="arg1" value="stop"/>
               <input type="submit" name="runCmd" value="Stop">
             </form>
@@ -125,7 +124,7 @@ else
         <tr>
           <td width="30%">
             <form name="restart" method="POST" action="/update.htm" target="progressFrame">
-              <input type="hidden" name="cmd" value="<?=$path_prefix;?>/plugins/swapfile/scripts/rc.swapfile">
+              <input type="hidden" name="cmd" value="<?=$path_prefix;?><?=$swapfile_script_path;?>">
               <input type="hidden" name="arg1" value="restart"/>
               <input type="submit" name="runCmd" value="Restart">
             </form>
@@ -137,7 +136,7 @@ else
         <tr>
           <td width="30%">
             <form name="start" method="POST" action="/update.htm" target="progressFrame">
-              <input type="hidden" name="cmd" value="<?=$path_prefix;?>/plugins/swapfile/scripts/rc.swapfile">
+              <input type="hidden" name="cmd" value="<?=$path_prefix;?><?=$swapfile_script_path;?>">
               <input type="hidden" name="arg1" value="start"/>
               <input type="submit" name="runCmd" value="Start">
             </form>
@@ -170,7 +169,7 @@ else
       <table>
         <tr>
           <td colspan="2" align="center">
-            <input type="hidden" name="cmd" value="<?=$path_prefix;?>/plugins/swapfile/scripts/rc.swapfile">
+            <input type="hidden" name="cmd" value="<?=$path_prefix;?><?=$swapfile_script_path;?>">
             <input type="hidden" name="arg1" value="updatecfg"/>
             <input type="submit" name="runCmd" value="Save Below Configuration & Implement Immediately">
             <button type="button" onClick="done();">Return to unRAID Settings Page</button>
