@@ -7,7 +7,7 @@
 <!ENTITY launch      "Settings/&name;">
 <!ENTITY pluginURL   "https://raw.githubusercontent.com/dcflachs/&name;_plugin/custom-build/&name;.plg">
 <!ENTITY packageVER  "&version;">
-<!ENTITY packageMD5  "f77a92aa1bfe8c5a84584a2b98591ddf">
+<!ENTITY packageMD5  "dd51cc4a7e94345021b5c4c4428dacee">
 <!ENTITY packagefile "&name;-package-&packageVER;.txz">
 <!ENTITY packageURL  "https://github.com/dcflachs/&name;_plugin/raw/custom-build/archive/&packagefile;">
 <!ENTITY pluginLOC   "/boot/config/plugins/&name;">
