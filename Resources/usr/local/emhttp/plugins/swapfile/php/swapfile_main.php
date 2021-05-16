@@ -104,8 +104,6 @@ else
     <span class="left">Actions</span>
   </div>
 
-  <br></br>
-
   <div>
     <table>
       <tr style="font-weight:bold; color:#333333; background:#F0F0F0; text-shadow:0 1px 1px #FFFFFF;">
