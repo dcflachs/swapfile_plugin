@@ -1,16 +1,8 @@
 <?PHP
-shell_exec("/etc/rc.d/rc.swapfile getplgversions");
-
 $swapfile_cfg = parse_ini_file("/boot/config/plugins/swapfile/swapfile.cfg");
-$swapfile_status = parse_ini_file("/usr/local/emhttp/plugins/swapfile/swapfile.status");
 
 $swapfile_location = $swapfile_cfg['SWAP_LOCATION'];
 $swapfile_filename = $swapfile_cfg['SWAP_FILENAME'];
-
-$plg_server = $swapfile_status['SWAP_PLG_HOSTING_SERVER_EXISTS'];
-$plg_online_exist = $swapfile_status['SWAP_PLG_ONLINE_EXIST'];
-$plg_online_ver = $swapfile_status['SWAP_PLG_ONLINE_VER'];
-$plg_loc_ver = $swapfile_status['SWAP_PLG_LOCAL_VER'];
 
 $swapfile_exists = (file_exists($swapfile_location."/".$swapfile_filename)) ? "Yes" : "No";
 
@@ -65,9 +57,6 @@ else
     <span class="left">Status</span>
   </div>
 
-  <p>unRAID forum thread for <u><a href="http://lime-technology.com/forum/index.php?topic=25816.0" target="_blank">SwapFile Plugin for unRAID v5 and v6</a></u></p>
-  <br></br>
-
   <div style="border: 0px solid black;">
     Swap file exists:
       <?if ($swapfile_exists == "Yes") :?>
@@ -108,33 +97,7 @@ else
     <?else:?>
       <span class="orange-text"><b> &#10006</b></span>
     <?endif;?>
-    <br></br>
-    Swapfile Plugin available on hosting server:
-      <?if ($plg_server == "0"):?>
-        <?if ($plg_online_exist == "0"):?>
-          <span class="green-text"><b> v<?=$plg_online_ver;?></b></span>
-        <?else:?>
-          <span class="orange-text"><b> No online plugin</b></span>
-        <?endif;?>
-      <?else:?>
-          <span class="red-text"><b> OFFLINE</b></span>
-      <?endif;?>
-    <br></br>
-    Swapfile Plugin local version:
-      <?if ($plg_loc_ver != "no_local_plg"):?>
-        <?if ($plg_loc_ver == $plg_online_ver):?>
-          <span class="green-text"><b> v<?=$plg_loc_ver;?></b></span>
-        <?else:?>
-          <?if ($plg_online_exist == "0"):?>
-            <span class="orange-text"><b> v<?=$plg_loc_ver;?></b></span>
-          <?else:?>
-            <span class="green-text"><b> v<?=$plg_loc_ver;?></b></span>
-          <?endif;?>
-        <?endif;?>
-      <?else:?>
-        <span class="red-text"><b> No local plugin</b></span>
-      <?endif;?>
-
+    
   </div>
 
   <div id="title">
@@ -192,34 +155,6 @@ else
   </div>
 
   <br></br>
-
-  <div style="border: 0px solid black;">
-    <table>
-      <tr style="font-weight:bold; color:#333333; background:#F0F0F0; text-shadow:0 1px 1px #FFFFFF;">
-        <td colspan="2">Version Actions</td>
-      </tr>
-      <?if (($plg_online_exist=="0") && ($plg_online_ver!=$plg_loc_ver)):?>
-        <tr>
-          <td>ONLINE Plugin version different than LOCAL Plugin version</td>
-          <td>
-            <form name="updateplg" method="POST" action="/update.htm" target="progressFrame">
-              <input type="hidden" name="cmd" value="<?=$path_prefix;?>/plugins/swapfile/scripts/rc.swapfile">
-              <input type="hidden" name="arg1" value="updateplg"/>
-              <input type="submit" name="runCmd" value="Update">
-            </form>
-          </td>
-        </tr>
-        <?$version_actions_exist="true"?>
-      <?endif;?>
-      <?if ($version_actions_exist=="false"):?>
-        <tr>
-          <td colspan="2" align="center">No Version Actions available</td>
-        </tr>
-      <?endif;?>
-    </table>
-  </div>
-
-  <br></br>
   <br></br>
 
 </div>
@@ -243,15 +178,6 @@ else
         </tr>
         <tr style="font-weight:bold; color:#333333; background:#F0F0F0; text-shadow:0 1px 1px #FFFFFF;">
           <td colspan="2">Boot and Startup options</td>
-        </tr>
-        <tr>
-          <td>Check & Update Plugin during array mount:</td>
-          <td>
-            <select name="arg2" id="arg2" size="1">
-              <?=mk_option($swapfile_cfg['UPGRADE_PLG_ON_BOOT'], "true", "Yes");?>
-              <?=mk_option($swapfile_cfg['UPGRADE_PLG_ON_BOOT'], "false", "No");?>
-            </select>
-          </td>
         </tr>
         <tr>
           <td>Start Swap file during array mount:</td>
