@@ -2,3 +2,6 @@ Icon="swapfile.png"
 Author="dcflachs"
 Title="SwapFile"
 Type="php"
+Menu="Utilities"
+---
+<?php include '/usr/local/emhttp/plugins/swapfile/php/swapfile_main.php';?>
