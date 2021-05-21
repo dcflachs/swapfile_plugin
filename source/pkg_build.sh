@@ -5,7 +5,7 @@ version=$(date +"%Y.%m.%d")$1
 
 mkdir -p $tmpdir/usr/local/emhttp/plugins/swapfile
 
-cp -RT /mnt/source/Resources/usr/local/emhttp/plugins/swapfile/ $tmpdir/usr/local/emhttp/plugins/swapfile/
+cp -RT /mnt/source/swapfile/ $tmpdir/usr/local/emhttp/plugins/swapfile/
 
 cd $tmpdir
 
