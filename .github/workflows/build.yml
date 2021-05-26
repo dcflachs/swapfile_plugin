@@ -32,7 +32,7 @@ jobs:
     - name: Build the in Docker
       run: |
         chmod +x ./build_in_docker.sh
-        chmod +x ./source/swapfile/pkg_build.sh
+        chmod +x ./source/pkg_build.sh
         ./build_in_docker.sh -u
    
     - name: Set Post-Build ENV Variables
