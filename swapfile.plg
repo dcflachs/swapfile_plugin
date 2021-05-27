@@ -2,10 +2,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name        "swapfile">
 <!ENTITY author      "dcflachs">
-<!ENTITY version     "2021.05.26">
+<!ENTITY version     "2021.05.27">
 <!ENTITY launch      "Settings/&name;">
 <!ENTITY packageVER  "&version;">
-<!ENTITY packageMD5  "a51c0be55fedeb23138009e8a8b2d39d">
+<!ENTITY packageMD5  "42c19aa6e5a3767114cc2dfbe2b5a076">
 <!ENTITY packageName "&name;-package-&packageVER;">
 <!ENTITY packagefile "&packageName;.txz">
 <!ENTITY github     	"dcflachs/&name;_plugin">
@@ -25,7 +25,9 @@
 >
 
 <CHANGES>
-###2021.05.06 
+###2021.05.27
+- Fix menu icon 
+###2021.05.26 
 - Added support for creating swapfile on BTRFS.
 - Removed auto-update on start functionality.
 - Cleanup of plugin installation code.
