@@ -176,7 +176,6 @@ swapfile_boot()
 ###################
 
 [ -f /boot/config/plugins/swapfile/swapfile.cfg ] && source /boot/config/plugins/swapfile/swapfile.cfg
-[ -f /usr/local/emhttp/plugins/swapfile/swapfile.status ] && source /usr/local/emhttp/plugins/swapfile/swapfile.status
 
 # Swapfile plugin folder on boot flash drive
 SWAP_PLUGIN_PATH="/boot/config/plugins/swapfile"
@@ -188,12 +187,12 @@ SWAP_NAME_NEW=$SWAP_NAME
 SWAP_SIZE_MB_NEW=$SWAP_SIZE_MB
 
 if [ $1 == "updatecfg" ] ; then
-  SWAP_ENABLE_ON_BOOT=$3
-  SWAP_DELETE=$4
-  SWAP_LOCATION_NEW=$5
-  SWAP_FILENAME_NEW=$6
-  SWAP_NAME_NEW=$7
-  SWAP_SIZE_MB_NEW=$8
+  SWAP_ENABLE_ON_BOOT=$2
+  SWAP_DELETE=$3
+  SWAP_LOCATION_NEW=$4
+  SWAP_FILENAME_NEW=$5
+  SWAP_NAME_NEW=$6
+  SWAP_SIZE_MB_NEW=$7
 
 	# Check if swap file exists
 	if [ -f ${SWAP_LOCATION}/${SWAP_FILENAME} ]; then

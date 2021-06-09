@@ -181,7 +181,7 @@ else
         <tr>
           <td>Start Swap file during array mount:</td>
           <td>
-            <select name="arg3" id="arg3" size="1">
+            <select name="arg2" id="arg2" size="1">
               <?=mk_option($swapfile_cfg['SWAP_ENABLE_ON_BOOT'], "true", "Yes");?>
               <?=mk_option($swapfile_cfg['SWAP_ENABLE_ON_BOOT'], "false", "No");?>
             </select>
@@ -190,7 +190,7 @@ else
         <tr>
           <td>Delete Swap file upon Stop (will be recreated during Start):</td>
           <td>
-            <select name="arg4" id="arg4" size="1">
+            <select name="arg3" id="arg3" size="1">
               <?=mk_option($swapfile_cfg['SWAP_DELETE'], "true", "Yes");?>
               <?=mk_option($swapfile_cfg['SWAP_DELETE'], "false", "No");?>
             </select>
@@ -201,19 +201,19 @@ else
         </tr>
         <tr>
           <td>Swap file location (Choose DISK share and not USER share):</td>
-          <td><input type="text" name="arg5" id="arg5" style="width: 17em;" maxlength="255" value="<?=$swapfile_cfg['SWAP_LOCATION'];?>"></td>
+          <td><input type="text" name="arg4" id="arg4" style="width: 17em;" maxlength="255" value="<?=$swapfile_cfg['SWAP_LOCATION'];?>"></td>
         </tr>
         <tr>
           <td>Swap file file name:</td>
-          <td><input type="text" name="arg6" id="arg6" style="width: 17em;" maxlength="25" value="<?=$swapfile_cfg['SWAP_FILENAME'];?>"></td>
+          <td><input type="text" name="arg5" id="arg5" style="width: 17em;" maxlength="25" value="<?=$swapfile_cfg['SWAP_FILENAME'];?>"></td>
         </tr>
         <tr>
           <td>Swap file swap name:</td>
-          <td><input type="text" name="arg7" id="arg7" style="width: 17em;" maxlength="25" value="<?=$swapfile_cfg['SWAP_NAME'];?>"></td>
+          <td><input type="text" name="arg6" id="arg6" style="width: 17em;" maxlength="25" value="<?=$swapfile_cfg['SWAP_NAME'];?>"></td>
         </tr>
         <tr>
           <td>Swap file size in MBs (example: for 2GB enter 2048):</td>
-          <td><input type="text" name="arg8" id="arg8" style="width: 3em;" maxlength="10" value="<?=$swapfile_cfg['SWAP_SIZE_MB'];?>"> MB</td>
+          <td><input type="text" name="arg7" id="arg7" style="width: 3em;" maxlength="10" value="<?=$swapfile_cfg['SWAP_SIZE_MB'];?>"> MB</td>
         </tr>
       </table>
     </form>
