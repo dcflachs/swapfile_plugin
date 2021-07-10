@@ -16,6 +16,7 @@ set_swappiness()
     logit "Setting swappiness to ${SWAPPINESS_NEW}"
     sysctl vm.swappiness=${SWAPPINESS_NEW}
   fi
+  return
 }
 
 #################
@@ -129,7 +130,7 @@ swapfile_start()
 		logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} created and started"
 	fi
 
-  set_swappiness()
+  set_swappiness
 }
 
 #################
@@ -235,7 +236,7 @@ if [ $1 == "updatecfg" ] ; then
   fi
 
   if [ "$SWAPPINESS" != "$SWAPPINESS_NEW" ]; then
-    set_swappiness()
+    set_swappiness
   fi
 
   SWAP_LOCATION=$SWAP_LOCATION_NEW
