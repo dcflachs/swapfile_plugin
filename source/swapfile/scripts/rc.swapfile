@@ -10,6 +10,14 @@ determine_filesystem_recurive()
   fi
 }
 
+set_swappiness()
+{
+  if [ -n "$SWAPPINESS_NEW" ]; then
+    logit "Setting swappiness to ${SWAPPINESS_NEW}"
+    sysctl vm.swappiness=${SWAPPINESS_NEW}
+  fi
+}
+
 #################
 # L O G I T
 #################
@@ -32,6 +40,7 @@ write_cfg()
   echo "SWAP_FILENAME=\"$SWAP_FILENAME\"" >> ${SWAP_PLUGIN_PATH}/swapfile.cfg
   echo "SWAP_NAME=\"$SWAP_NAME\"" >> ${SWAP_PLUGIN_PATH}/swapfile.cfg
   echo "SWAP_SIZE_MB=\"$SWAP_SIZE_MB\"" >> ${SWAP_PLUGIN_PATH}/swapfile.cfg
+  echo "SWAPPINESS=\"$SWAPPINESS\"" >> ${SWAP_PLUGIN_PATH}/swapfile.cfg
 
   logit "Plugin configuration written"
 }
@@ -119,6 +128,8 @@ swapfile_start()
     swapon -v ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}
 		logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} created and started"
 	fi
+
+  set_swappiness()
 }
 
 #################
@@ -185,6 +196,7 @@ SWAP_LOCATION_NEW=$SWAP_LOCATION
 SWAP_FILENAME_NEW=$SWAP_FILENAME
 SWAP_NAME_NEW=$SWAP_NAME
 SWAP_SIZE_MB_NEW=$SWAP_SIZE_MB
+SWAPPINESS_NEW=$SWAPPINESS
 
 if [ $1 == "updatecfg" ] ; then
   SWAP_ENABLE_ON_BOOT=$2
@@ -193,6 +205,7 @@ if [ $1 == "updatecfg" ] ; then
   SWAP_FILENAME_NEW=$5
   SWAP_NAME_NEW=$6
   SWAP_SIZE_MB_NEW=$7
+  SWAPPINESS_NEW=$8
 
 	# Check if swap file exists
 	if [ -f ${SWAP_LOCATION}/${SWAP_FILENAME} ]; then
@@ -221,10 +234,15 @@ if [ $1 == "updatecfg" ] ; then
     SWAP_DELETE=$SWAP_DELETE_SAVE
   fi
 
+  if [ "$SWAPPINESS" != "$SWAPPINESS_NEW" ]; then
+    set_swappiness()
+  fi
+
   SWAP_LOCATION=$SWAP_LOCATION_NEW
   SWAP_FILENAME=$SWAP_FILENAME_NEW
   SWAP_NAME=$SWAP_NAME_NEW
   SWAP_SIZE_MB=$SWAP_SIZE_MB_NEW
+  SWAPPINESS=$SWAPPINESS_NEW
 
   write_cfg
 else

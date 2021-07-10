@@ -221,6 +221,13 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
           <td>Swap file size in MBs (example: for 2GB enter 2048):</td>
           <td><input type="text" name="arg7" id="arg7" style="width: 3em;" maxlength="10" value="<?=$swapfile_cfg['SWAP_SIZE_MB'];?>"> MB</td>
         </tr>
+        <tr style="font-weight:bold; color:#333333; background:#F0F0F0; text-shadow:0 1px 1px #FFFFFF;">
+          <td colspan="2">Swap Settings</td>
+        </tr>
+        <tr>
+          <td>Swappiness:</td>
+          <td><input type="number" name="arg8" id="arg8" style="width: 2em;" min="0" step="1" max="100" value="<?=$swapfile_cfg['SWAPPINESS'];?>"></td>
+        </tr>
       </table>
     </form>
   </div>
