@@ -47,6 +47,8 @@ else
   $path_prefix = "";
 }
 
+$swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
+
 ?>
 
 <HTML>
@@ -94,6 +96,10 @@ else
             </div>
           <?endif;?>
         </div>
+      </div>
+      <br></br>
+      <div style="width: 35%; float:left; border: 0px solid black;">
+          Swappiness: <b><?=$swappiness;?></b>
       </div>
     <?else:?>
       <span class="orange-text"><b> &#10006</b></span>
