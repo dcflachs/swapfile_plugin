@@ -241,7 +241,7 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
               Location should have no trailing / character.<br>
               Location must be on a DISK share not USER share.<br>
               Location can be on a CACHE DRIVE but not on a mutli-disk CACHE-POOL.<br>
-              For BTRFS formatted file systems the location must be on a top level noCOW subvolume.<br>
+              For BTRFS formatted file systems the location must be on a top level subvolume.<br>
               To ensure the subvolume is created properly chose a nonexistent subfolder name<br>
               and the plugin will create the proper subvolume for you.
             </blockquote>
