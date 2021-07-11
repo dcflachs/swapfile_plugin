@@ -125,7 +125,11 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
               <input type="submit" name="runCmd" value="Stop">
             </form>
           </td>
-          <td>Stop swap file usage</td>
+          <td>
+            <blockquote class="inline_help" style="display: none;">
+              Stop swap file usage
+            </blockquote>
+          </td>
         </tr>
         <tr>
           <td width="30%">
@@ -135,7 +139,11 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
               <input type="submit" name="runCmd" value="Restart">
             </form>
           </td>
-          <td>Restart swap file usage</td>
+          <td>
+            <blockquote class="inline_help" style="display: none;">
+              Restart swap file usage
+            </blockquote>
+          </td>
         </tr>
         <?$control_actions_exist = "true"?>
       <?else:?>
@@ -147,7 +155,11 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
               <input type="submit" name="runCmd" value="Start">
             </form>
           </td>
-          <td>Start swap file usage</td>
+          <td>
+            <blockquote class="inline_help" style="display: none;">
+              Start swap file usage
+            </blockquote>
+          </td>
         </tr>
         <?$control_actions_exist = "true"?>
       <?endif;?>
@@ -194,7 +206,14 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
           </td>
         </tr>
         <tr>
-          <td>Delete Swap file upon Stop (will be recreated during Start):</td>
+          <td colspan="2">
+            <blockquote class="inline_help" style="display: none;">
+              Start using the swapfile during array mount.
+            </blockquote>
+          </td>
+        </tr>
+        <tr>
+          <td>Delete Swap file upon Stop:</td>
           <td>
             <select name="arg3" id="arg3" size="1">
               <?=mk_option($swapfile_cfg['SWAP_DELETE'], "true", "Yes");?>
@@ -202,24 +221,66 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
             </select>
           </td>
         </tr>
+        <tr>
+          <td colspan="2">
+            <blockquote class="inline_help" style="display: none;">
+              Swapfile will be deleted on stop and recreated on Start.
+            </blockquote>
+          </td>
+        </tr>
         <tr style="font-weight:bold; color:#333333; background:#F0F0F0; text-shadow:0 1px 1px #FFFFFF;">
           <td colspan="2">Swapfile Settings (Any change will cause the swap file to be recreated if running)</td>
         </tr>
         <tr>
-          <td>Swap file location (Choose DISK share and not USER share):</td>
+          <td>Swap file location:</td>
           <td><input type="text" name="arg4" id="arg4" style="width: 17em;" maxlength="255" value="<?=$swapfile_cfg['SWAP_LOCATION'];?>"></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <blockquote id="helpindfo0" class="inline_help" style="display: none;">
+              Location should have no trailing / character.<br>
+              Location must be on a DISK share not USER share.<br>
+              Location can be on a CACHE DRIVE but not on a mutli-disk CACHE-POOL.<br>
+              For BTRFS formatted file systems the location must be on a top level noCOW subvolume.<br>
+              To ensure the subvolume is created properly chose a nonexistent subfolder name<br>
+              and the plugin will create the proper subvolume for you.
+            </blockquote>
+          </td>
         </tr>
         <tr>
           <td>Swap file file name:</td>
           <td><input type="text" name="arg5" id="arg5" style="width: 17em;" maxlength="25" value="<?=$swapfile_cfg['SWAP_FILENAME'];?>"></td>
         </tr>
         <tr>
+          <td colspan="2">
+            <blockquote class="inline_help" style="display: none;">
+              Name of the swapfile.
+            </blockquote>
+          </td>
+        </tr>
+        <tr>
           <td>Swap file swap name:</td>
           <td><input type="text" name="arg6" id="arg6" style="width: 17em;" maxlength="25" value="<?=$swapfile_cfg['SWAP_NAME'];?>"></td>
         </tr>
         <tr>
-          <td>Swap file size in MBs (example: for 2GB enter 2048):</td>
+          <td colspan="2">
+            <blockquote class="inline_help" style="display: none;">
+              Label for swapfile.<br>
+              See mkswap documentation at <a href="https://man7.org/linux/man-pages/man8/mkswap.8.html" target="_blank" title="Manpage for mkswap"></i> <u>man7.org</u></a>.
+            </blockquote>
+          </td>
+        </tr>
+        <tr>
+          <td>Swap file size:</td>
           <td><input type="text" name="arg7" id="arg7" style="width: 3em;" maxlength="10" value="<?=$swapfile_cfg['SWAP_SIZE_MB'];?>"> MB</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <blockquote class="inline_help" style="display: none;">
+              Space to allocate for the swapfile in MB.<br>
+              (example: for 2GB enter 2048)
+            </blockquote>
+          </td>
         </tr>
         <tr style="font-weight:bold; color:#333333; background:#F0F0F0; text-shadow:0 1px 1px #FFFFFF;">
           <td colspan="2">Swap Settings</td>
@@ -227,6 +288,14 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
         <tr>
           <td>Swappiness:</td>
           <td><input type="number" name="arg8" id="arg8" style="width: 2em;" min="0" step="1" max="100" value="<?=$swapfile_cfg['SWAPPINESS'];?>"></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <blockquote class="inline_help" style="display: none;">
+              Configure swappiness 0 - 100, default 60.<br>
+              See this description of swappiness at <a href="https://linuxhint.com/understanding_vm_swappiness/" target="_blank" title="Understanding Swappiness"></i> <u>linuxhint.com</u></a>.
+            </blockquote>
+          </td>
         </tr>
       </table>
     </form>
