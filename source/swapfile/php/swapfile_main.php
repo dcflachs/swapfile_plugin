@@ -233,7 +233,7 @@ $swappiness = file("/proc/sys/vm/swappiness", FILE_IGNORE_NEW_LINES)[0];
         </tr>
         <tr>
           <td>Swap file location:</td>
-          <td><input type="text" name="arg4" id="arg4" style="width: 17em;" maxlength="255" value="<?=$swapfile_cfg['SWAP_LOCATION'];?>"></td>
+          <td><input type="text" name="arg4" id="arg4" style="width: 17em;" maxlength="255" value="<?=$swapfile_cfg['SWAP_LOCATION'];?>"><span class="fa fa-question-circle fa-fw" onclick="HelpButton();return false;"></span></td>
         </tr>
         <tr>
           <td colspan="2">
