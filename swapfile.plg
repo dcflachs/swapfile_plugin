@@ -8,7 +8,7 @@
 <!ENTITY packageMD5  "4a7076862c3c5445355be5b3abf02ac2">
 <!ENTITY packageName "&name;-package-&packageVER;">
 <!ENTITY packagefile "&packageName;.txz">
-<!ENTITY github     	"dcflachs/&name;_plugin">
+<!ENTITY github      "dcflachs/&name;_plugin">
 <!ENTITY pluginURL   "https://raw.githubusercontent.com/&github;/master/&name;.plg">
 <!ENTITY packageURL  "https://github.com/&github;/releases/download/&version;/&packagefile;">
 <!ENTITY pluginLOC   "/boot/config/plugins/&name;">
