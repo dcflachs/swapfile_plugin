@@ -51,13 +51,13 @@ write_cfg()
 #################
 swapfile_start()
 {
-	# Check if swap file exists
-	if [ -f ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} ]; then
+  # Check if swap file exists
+  if [ -f ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} ]; then
     SWAP_RUNNING=$(swapon -s | grep ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} | cut -d" " -f1)
-		# Check if swap file already started
+    # Check if swap file already started
     if [ "$SWAP_RUNNING" == "${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}" ] ; then
-			logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} already started"
-		# Swap file not started
+      logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} already started"
+    # Swap file not started
     else
       if [ `stat -f -c %T ${SWAP_LOCATION_NEW}` == "btrfs" ]; then
         #Swapfile is on a btrfs filesystem
@@ -72,20 +72,20 @@ swapfile_start()
           else
             logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} is on a BTRFS file system but does not have the No_COW attribute."
             return
-          fi      
+          fi
         else
           logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} is on a BTRFS file system but not in a subvolume."
           return
         fi
       fi
 
-		  # Turn on swap file usage
+      # Turn on swap file usage
       swapon -v ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}
-			logit " Swap file ${SWAP_LOCATION}/${SWAP_FILENAME} re-used and started"
-		fi
-	# Swap file does not exist
+      logit " Swap file ${SWAP_LOCATION}/${SWAP_FILENAME} re-used and started"
+    fi
+  # Swap file does not exist
   else
-		# Check if requested swapfile location exists
+    # Check if requested swapfile location exists
     if [ ! -d ${SWAP_LOCATION_NEW} ] ; then
       fstype=$(determine_filesystem_recurive ${SWAP_LOCATION_NEW})
       if [ "$fstype" == "btrfs" ] ; then
@@ -113,22 +113,50 @@ swapfile_start()
     fi
 
     # Create swap file
-		logit "Creating swap file ${SWAP_LOCATION}/${SWAP_FILENAME} please wait ..."
-    dd if=/dev/zero of=${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} bs=1M count=${SWAP_SIZE_MB_NEW}
+    logit "Creating swap file ${SWAP_LOCATION}/${SWAP_FILENAME} please wait ..."
+
+    # https://manpages.ubuntu.com/manpages/kinetic/en/man8/swapon.8.html
+    # Preallocated files created by fallocate(1) may be interpreted as files with holes too
+    # depending of the filesystem. Preallocated swap files are supported on XFS since Linux
+    # 4.18.
+
+    fsType=$(df ${SWAP_LOCATION_NEW} --output=fstype | sed '1d')
+    if [ $fsType == 'xfs' ]; then # FS supported
+      CurrV=$(uname -r)
+      ExpecV='4.18'
+      printf -v versions '%s\n%s' "$ExpecV" "$CurrV"
+      if [ $versions == $(sort -V <<< "$versions") ]; then # Above Kernel version 4.18
+        fallocate -l ${SWAP_SIZE_MB_NEW}M ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} || allocation_failed=1
+      else
+        use_dd=1 # fall back
+      fi
+    else
+      use_dd=1 # fall back
+    fi
+
+    if [ ${allocation_failed:-0} -eq 1 ]; then
+      logit "fallocate failed, falling back to dd"
+      rm ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}
+      use_dd=1 # fall back
+    fi
+
+    if [ $use_dd == 1 ]; then
+      dd if=/dev/zero of=${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} bs=1M count=${SWAP_SIZE_MB_NEW}
+    fi
 
     if [ `stat -f -c %T ${SWAP_LOCATION_NEW}` == "btrfs" ]; then
       #Turn off compression on swapfile
       btrfs property set ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} compression none
     fi
 
-		# Assign SWAP_NAME to the swap file
+    # Assign SWAP_NAME to the swap file
     mkswap -L ${SWAP_NAME_NEW} ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}
-		# Change swap file permissions as required
+    # Change swap file permissions as required
     chmod 600 ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}
-		# Turn on swap file usage
+    # Turn on swap file usage
     swapon -v ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}
-		logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} created and started"
-	fi
+    logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} created and started"
+  fi
 
   set_swappiness
 }
@@ -138,15 +166,15 @@ swapfile_start()
 #################
 swapfile_stop()
 {
-	# Check if swap file assigned and in use
+  # Check if swap file assigned and in use
   SWAP_RUNNING=$(swapon -s | grep ${SWAP_LOCATION}/${SWAP_FILENAME} | cut -d" " -f1)
-	if [ "$SWAP_RUNNING" == "${SWAP_LOCATION}/${SWAP_FILENAME}" ] ; then
-		# Turn off swap file usage
+  if [ "$SWAP_RUNNING" == "${SWAP_LOCATION}/${SWAP_FILENAME}" ] ; then
+    # Turn off swap file usage
     swapoff -v ${SWAP_LOCATION}/${SWAP_FILENAME}
     logit "Swap file ${SWAP_LOCATION}/${SWAP_FILENAME} stopped"
-	else
-		logit "Swap file ${SWAP_LOCATION}/${SWAP_FILENAME} not running - Nothing to stop"
-	fi
+  else
+    logit "Swap file ${SWAP_LOCATION}/${SWAP_FILENAME} not running - Nothing to stop"
+  fi
   if [ -f ${SWAP_LOCATION}/${SWAP_FILENAME} ] ; then
     if [ "$SWAP_DELETE" == "true" ] ; then
       rm --force ${SWAP_LOCATION}/${SWAP_FILENAME}
@@ -164,9 +192,9 @@ swapfile_stop()
 #################
 swapfile_restart()
 {
-	swapfile_stop
-	sleep 3
-	swapfile_start
+  swapfile_stop
+  sleep 3
+  swapfile_start
 }
 
 ###################
@@ -208,8 +236,8 @@ if [ $1 == "updatecfg" ] ; then
   SWAP_SIZE_MB_NEW=$7
   SWAPPINESS_NEW=$8
 
-	# Check if swap file exists
-	if [ -f ${SWAP_LOCATION}/${SWAP_FILENAME} ]; then
+  # Check if swap file exists
+  if [ -f ${SWAP_LOCATION}/${SWAP_FILENAME} ]; then
     # Save "SWAP_DELETE" parameter value
     SWAP_DELETE_SAVE=$SWAP_DELETE
     # Check if swap file location of filename changed
