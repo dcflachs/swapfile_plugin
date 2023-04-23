@@ -14,7 +14,7 @@ set_swappiness()
 {
   if [ -n "$SWAPPINESS_NEW" ]; then
     logit "Setting swappiness to ${SWAPPINESS_NEW}"
-    sysctl vm.swappiness=${SWAPPINESS_NEW}
+    sysctl -q vm.swappiness=${SWAPPINESS_NEW}
   fi
   return
 }
