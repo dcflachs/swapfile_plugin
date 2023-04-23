@@ -37,7 +37,7 @@ is_array_mode_normal()
 logit()
 {
   logger -trc.swapfile -plocal7.info -is "$1"
-  echo "$1"
+  # echo "$1"
 }
 
 #################
@@ -210,7 +210,7 @@ swapfile_boot()
 SWAP_PLUGIN_PATH="/boot/config/plugins/swapfile"
 
 #Remove trailing /
-SWAP_LOCATION_NEW="${SWAP_LOCATION%/}"
+SWAP_LOCATION="${SWAP_LOCATION%/}"
 
 # Copy below parameters for swapfile_start() function - uses "NEW" parameters
 SWAP_LOCATION_NEW=$SWAP_LOCATION
