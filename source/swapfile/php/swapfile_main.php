@@ -14,7 +14,7 @@ $swapfile_summary_cnt = count($swapfile_summary);
 $swapfile_running = "No";
 $swapfile_size = 0;
 $swapfile_usage = 0;
-for ($i=0; $i<$swapfile_summary_cnt; $i++)
+for ($i=1; $i<$swapfile_summary_cnt; $i++)
 {
   $pos = strpos($swapfile_summary[$i], $swapfile_location."/".$swapfile_filename);
   if (($pos !== false) && ($pos == 0))

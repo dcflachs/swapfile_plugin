@@ -19,6 +19,18 @@ set_swappiness()
   return
 }
 
+is_array_mode_normal()
+{
+  # source <(grep mdState '/usr/local/emhttp/state/var.ini')
+  source <(grep startMode '/usr/local/emhttp/state/var.ini')
+
+  if [ $startMode == "Normal"  ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 #################
 # L O G I T
 #################
@@ -51,14 +63,16 @@ write_cfg()
 #################
 swapfile_start()
 {
+  is_array_mode_normal || { logit "Swapfile start disabled when array is in maintenance mode."; return; }
+
   # Check if swap file exists
   if [ -f ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} ]; then
     SWAP_RUNNING=$(swapon -s | grep ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} | cut -d" " -f1)
     # Check if swap file already started
     if [ "$SWAP_RUNNING" == "${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW}" ] ; then
       logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} already started"
-    # Swap file not started
     else
+    # Swap file not started
       if [ `stat -f -c %T ${SWAP_LOCATION_NEW}` == "btrfs" ]; then
         #Swapfile is on a btrfs filesystem
         if [ `stat --format=%i ${SWAP_LOCATION_NEW}` == "256" ]; then
@@ -97,6 +111,9 @@ swapfile_start()
 
         #Turn off Copy-on-Write for swapfile
         chattr -R +C ${SWAP_LOCATION_NEW}
+      elif [ "$fstype" == "zfs" ]; then
+        logit "Swap file ${SWAP_LOCATION_NEW}/${SWAP_FILENAME_NEW} is on a ZFS file system. Swap does not support ZFS."
+        return
       else
        # Create swap file location including parents if they don't exist
        mkdir --parents ${SWAP_LOCATION_NEW}
@@ -191,6 +208,9 @@ swapfile_boot()
 
 # Swapfile plugin folder on boot flash drive
 SWAP_PLUGIN_PATH="/boot/config/plugins/swapfile"
+
+#Remove trailing /
+SWAP_LOCATION_NEW="${SWAP_LOCATION%/}"
 
 # Copy below parameters for swapfile_start() function - uses "NEW" parameters
 SWAP_LOCATION_NEW=$SWAP_LOCATION
