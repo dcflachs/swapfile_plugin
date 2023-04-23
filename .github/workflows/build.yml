@@ -66,6 +66,7 @@ jobs:
       with:
         tag_name:  ${{env.RELEASE_TAG_NAME}}
         release_name: Swapfile Package ${{env.RELEASE_TAG_NAME}}
+        body_path: ./archive/release_info
         draft: true
         prerelease: false
     

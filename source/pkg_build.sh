@@ -19,6 +19,7 @@ cd /
 
 rm -rf $tmpdir
 
-echo "MD5:"
+MD5=`md5sum $OUTPUT_FOLDER/swapfile-package-${version}.txz`
 
-md5sum $OUTPUT_FOLDER/swapfile-package-${version}.txz
+echo "MD5: $MD5"
+echo "MD5: $(echo $MD5 | head -n1 | awk '{print $1;}')" >> $OUTPUT_FOLDER/release_info
